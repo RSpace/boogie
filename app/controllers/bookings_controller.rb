@@ -26,8 +26,24 @@ class BookingsController < ApplicationController
   def create
     @booking = Booking.new(booking_params)
 
+    # Get the credit card details submitted by the form
+    token = params[:stripeToken]
+
+    # Create the charge on Stripe's servers - this will charge the user's card
+    begin
+      charge = Stripe::Charge.create(
+        :amount => BOOGIE_SETTINGS[:booking_fee],
+        :currency => "DKK",
+        :card => token,
+        :description => "payinguser@example.com"
+      )
+    rescue Stripe::CardError => e
+      raise e # TEST
+      charge = false
+    end
+
     respond_to do |format|
-      if @booking.save
+      if charge && @booking.save
         format.html { redirect_to @booking, notice: 'Booking was successfully created.' }
         format.json { render :show, status: :created, location: @booking }
       else

@@ -16,6 +16,16 @@
     <%= f.date_select :booking_date %>
   </div>
   <div class="actions">
-    <%= f.submit %>
+    <script
+      src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+      data-key="<%= ENV['STRIPE_PUBLISHABLE_KEY'] %>"
+      data-amount="<%= BOOGIE_SETTINGS[:booking_fee] %>"
+      data-currency="DKK"
+      data-name="SKRum"
+      data-description="Leje af fælleslokale"
+      data-panel-label="Betal og book"
+      data-label="Betal og book"
+    >
+    </script>
   </div>
 <% end %>
