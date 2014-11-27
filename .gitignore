@@ -18,3 +18,4 @@
 # Bower
 vendor/assets/components
 public/assets
+node_modules
