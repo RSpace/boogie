@@ -31,6 +31,9 @@ gem 'sdoc', '~> 0.4.0',          group: :doc
 # Web server
 gem 'unicorn'
 
+# Authentication
+gem 'devise'
+
 # Payment
 gem 'stripe', :git => 'https://github.com/stripe/stripe-ruby'
 
