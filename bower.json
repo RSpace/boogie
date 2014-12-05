@@ -1,6 +1,0 @@
-{
-  "name": "boogie",
-  "dependencies": {
-    "jqueryui": ">= 1.11.2"
-  }
-}
