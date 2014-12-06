@@ -27,6 +27,9 @@ class BookingsController < ApplicationController
   def create
     @booking = Booking.new(booking_params)
 
+    # Make sure the booking belongs to the current user
+    @booking.user = current_user
+
     # Get the credit card details submitted by the form
     token = params[:stripeToken]
 
