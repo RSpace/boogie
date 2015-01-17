@@ -12,6 +12,7 @@ gem 'rails_12factor'
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.3'
+
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 # Use CoffeeScript for .js.coffee assets and views
@@ -33,6 +34,10 @@ gem 'unicorn'
 
 # Authentication
 gem 'devise'
+
+# Twitter Bootstrap
+gem 'bootstrap-sass', '~> 3.3.1'
+gem 'autoprefixer-rails'
 
 # Payment
 gem 'stripe', :git => 'https://github.com/stripe/stripe-ruby'
