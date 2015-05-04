@@ -13,8 +13,10 @@
                 booking_date: currentBookingDate
               }
             }
-          ).then(function() {
+          ).done(function() {
             location.reload();
+          }).fail(function(errors) {
+            alert('Bookingen kunne oprettes - er datoen allerede optaget?');
           });
         },
         closed: function() {

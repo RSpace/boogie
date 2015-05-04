@@ -16,7 +16,7 @@ class BookingsController < ApplicationController
   # GET /bookings/new
   def new
     @booking = Booking.new
-    @bookings = Booking.all_future
+    @bookings = Booking.all_this_month_and_forward
   end
 
   # GET /bookings/1/edit
@@ -31,20 +31,23 @@ class BookingsController < ApplicationController
     # Make sure the booking belongs to the current user
     @booking.user = current_user
 
-    # Get the credit card details submitted by the form
-    token = params[:stripeToken]
+    # Only charge card if booking is valid
+    if @booking.valid?
+      # Get the credit card details submitted by the form
+      token = params[:stripeToken]
 
-    # Create the charge on Stripe's servers - this will charge the user's card
-    begin
-      charge = Stripe::Charge.create(
-        :amount => BOOGIE_SETTINGS[:booking_fee],
-        :currency => "DKK",
-        :card => token,
-        :description => "payinguser@example.com"
-      )
-    rescue Stripe::CardError => e
-      raise e # TEST
-      charge = false
+      # Create the charge on Stripe's servers - this will charge the user's card
+      begin
+        charge = Stripe::Charge.create(
+          :amount => BOOGIE_SETTINGS[:booking_fee],
+          :currency => "DKK",
+          :card => token,
+          :description => "payinguser@example.com"
+        )
+      rescue Stripe::CardError => e
+        raise e # TEST
+        charge = false
+      end
     end
 
     respond_to do |format|
