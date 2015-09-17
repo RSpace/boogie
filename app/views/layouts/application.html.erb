@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Boogie</title>
+  <title>Fællesrummet</title>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
@@ -23,9 +23,7 @@
       </div>
       <div id="navbar" class="navbar-collapse collapse">
         <ul class="nav navbar-nav">
-          <% if user_signed_in? %>
-            <li class="<%= 'active' if current_page?(new_booking_path) %>"><%= link_to 'Ny booking', new_booking_path %> </li>
-          <% end %>
+          <li class="<%= 'active' if current_page?(bookings_path) %>"><%= link_to 'Ny booking', bookings_path %> </li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
           <% if user_signed_in? %>
@@ -44,8 +42,20 @@
 
   <!-- Main container -->
   <div class="container" role="main">
+    <%= render 'layouts/messages' %>
     <%= yield %>
   </div>
+
+  <script src="https://checkout.stripe.com/checkout.js"></script>
+
+  <script>
+    window.bootstrapData = {
+      stripe: {
+        key: '<%= ENV['STRIPE_PUBLISHABLE_KEY'] %>',
+        amount: '<%= BOOGIE_SETTINGS[:booking_fee] %>'
+      }
+    }
+  </script>
 
 </body>
 </html>

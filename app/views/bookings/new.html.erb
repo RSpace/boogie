@@ -2,31 +2,6 @@
   <h1>Ny booking</h1>
 </div>
 
-<% for_each_future_month(7) do |year, month| %>
-  <h3><%= t('date.month_names')[month].titleize %></h3>
-  <%= calendar_for(@bookings, :year => year, :month => month, :first_day_of_week => 1) do |t| %>
-    <%= t.head(*t('date.day_names').rotate(1).map(&:titleize)) %>
-    <%= t.day(:day_method => :booking_date) do |day, bookings| %>
-      <% if day.month == month %>
-        <% if bookings.empty? %>
-          <a href="#" class="bookable-date" date="<%= day.to_s(:utc) %>"><%= day.day %></a>
-        <% else %>
-          <span class="booked-date"><%= day.day %></span>
-        <% end %>
-      <% end %>
-    <% end %>
-  <% end %>
-<% end %>
 
-<%= link_to 'Back', bookings_path %>
 
-<script src="https://checkout.stripe.com/checkout.js"></script>
-
-<script>
-  window.bootstrapData = {
-    stripe: {
-      key: '<%= ENV['STRIPE_PUBLISHABLE_KEY'] %>',
-      amount: '<%= BOOGIE_SETTINGS[:booking_fee] %>'
-    }
-  }
-</script>
+<%= link_to 'Tilbage', bookings_path %>

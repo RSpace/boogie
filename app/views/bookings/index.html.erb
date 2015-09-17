@@ -1,25 +1,23 @@
-<h1>Listing bookings</h1>
+<h1>Book fællesrummet</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>Booking date</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @bookings.each do |booking| %>
-      <tr>
-        <td><%= booking.booking_date %></td>
-        <td><%= link_to 'Show', booking %></td>
-        <td><%= link_to 'Edit', edit_booking_path(booking) %></td>
-        <td><%= link_to 'Destroy', booking, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
+<% for_each_future_month(7) do |year, month| %>
+  <div class="booking-month">
+    <h3><%= t('date.month_names')[month].titleize %> <%= year %></h3>
+    <%= calendar_for(@bookings, :year => year, :month => month, :first_day_of_week => 1, :html => {:class => 'table table-bordered'}) do |t| %>
+      <%= t.head(*t('date.day_names').rotate(1).map { |n| n.titleize.first(2) }) %>
+      <%= t.day(:day_method => :booking_date) do |day, bookings| %>
+        <% if day.month == month %>
+          <% if bookings.present? %>
+            <div class="booked-date"><%= day.day %></div>
+          <% elsif day < Time.now %>
+            <div class="past-date"><%= day.day %></div>
+          <% else %>
+            <div class="bookable-date">
+              <%= link_to day.day, new_booking_path(:date => day.to_s(:utc)) %>
+            </div>
+          <% end %>
+        <% end %>
+      <% end %>
     <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<%= link_to 'New Booking', new_booking_path %>
+  </div>
+<% end %>

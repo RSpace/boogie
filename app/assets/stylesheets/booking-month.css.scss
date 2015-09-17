@@ -1,0 +1,33 @@
+.booking-month {
+  width: 300px;
+  float: left;
+  margin-right: 50px;
+}
+
+.booking-month .table > tbody > tr > td {
+  padding: 0;
+}
+
+.booked-date, .past-date, .bookable-date {
+  width: 100%;
+  height: 100%;
+  padding: 8px;
+  text-align: center;
+}
+
+.booked-date {
+  background-color: #f2dede;
+  color: #a94442;
+}
+
+.past-date {
+  background-color: #ddd;
+  color: #ccc;
+}
+
+.bookable-date {
+  background-color: #dff0d8;
+}
+.bookable-date a {
+  color: #3c763d;
+}

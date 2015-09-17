@@ -16,7 +16,7 @@
           ).done(function() {
             location.reload();
           }).fail(function(errors) {
-            alert('Bookingen kunne oprettes - er datoen allerede optaget?');
+            alert('Bookingen kunne ikke oprettes - er datoen allerede optaget?');
           });
         },
         closed: function() {

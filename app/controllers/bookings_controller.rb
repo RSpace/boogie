@@ -1,11 +1,11 @@
 class BookingsController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_user!, :except => :index
   before_action :set_booking, only: [:show, :edit, :update, :destroy]
 
   # GET /bookings
   # GET /bookings.json
   def index
-    @bookings = Booking.all
+    @bookings = Booking.all_this_month_and_forward
   end
 
   # GET /bookings/1
@@ -16,7 +16,6 @@ class BookingsController < ApplicationController
   # GET /bookings/new
   def new
     @booking = Booking.new
-    @bookings = Booking.all_this_month_and_forward
   end
 
   # GET /bookings/1/edit
