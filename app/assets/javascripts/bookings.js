@@ -24,7 +24,8 @@
         }
       });
 
-    $('.bookable-date').on('click', function(e) {
+    // TODO: Make Stripe window appear at appropriate time
+    $('.TODO').on('click', function(e) {
       e.preventDefault();
 
       if (currentBookingDate) {
