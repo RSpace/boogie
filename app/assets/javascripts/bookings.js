@@ -1,7 +1,9 @@
 (function (window, $, undefined) {
-  var currentBookingDate = null;
-
   $(function() {
+
+    $('#start_payment_button').on('click', function(e) {
+      e.preventDefault();
+
       var handler = StripeCheckout.configure({
         key: window.bootstrapData.stripe.key,
         token: function(token) {
@@ -10,29 +12,24 @@
             {
               stripeToken: token.id,
               booking: {
-                booking_date: currentBookingDate
+                booking_date: window.bootstrapData.current_booking_date
               }
             }
-          ).done(function() {
-            location.reload();
+          ).done(function(booking) {
+            location.href = '/bookings/' + booking.id;
           }).fail(function(errors) {
             alert('Bookingen kunne ikke oprettes - er datoen allerede optaget?');
           });
-        },
-        closed: function() {
-          currentBookingDate = null;
         }
       });
 
-    // TODO: Make Stripe window appear at appropriate time
-    $('.TODO').on('click', function(e) {
-      e.preventDefault();
-
-      if (currentBookingDate) {
+      // Ensure that terms are accepted
+      if($('#terms_accepted').is(':checked')) {
+        $('#terms_not_accepted_error').addClass('hidden');
+      } else {
+        $('#terms_not_accepted_error').removeClass('hidden');
         return;
       }
-
-      currentBookingDate = e.target.attributes.date.value;
 
       // Open Checkout with further options
       handler.open({
@@ -48,6 +45,7 @@
     $(window).on('popstate', function() {
       handler.close();
     });
+
   });
 
 })(window, jQuery);

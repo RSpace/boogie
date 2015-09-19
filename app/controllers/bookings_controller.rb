@@ -15,7 +15,10 @@ class BookingsController < ApplicationController
 
   # GET /bookings/new
   def new
-    @booking = Booking.new
+    @booking_date = params[:date].try(:to_date) rescue nil
+    redirect_to bookings_path, notice: 'Vælg venligst den dato du ønsker at booke.' unless @booking_date.present?
+
+    @booking = Booking.new(:booking_date => @booking_date)
   end
 
   # GET /bookings/1/edit

@@ -1,3 +1,3 @@
 BOOGIE_SETTINGS = {
-  booking_fee: 80000 # DKK ører
+  booking_fee: 71400 # DKK ører
 }

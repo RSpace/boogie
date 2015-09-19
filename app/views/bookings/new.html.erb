@@ -1,7 +1,35 @@
 <div class="page-header">
-  <h1>Ny booking</h1>
+  <h1>Bekræft og betal booking</h1>
 </div>
 
+<p>Du er ved at booke fælleslokalet</p>
+<p class="info-box bg-primary lead"><%= l(@booking.booking_date, format: '%A d. %e. %B %Y') %></p>
+<p>
+  Der bliver trukket <b><%= number_to_currency(BOOGIE_SETTINGS[:booking_fee]/100) %></b> fra dit betalingskort.
+  Bookingen og betalingen er bindende og kan ikke annulleres eller laves om.
+</p>
 
+<p class="info-box bg-danger text-danger hidden" id="terms_not_accepted_error">Du skal acceptere betingelserne for leje for at fortsætte.</p>
 
-<%= link_to 'Tilbage', bookings_path %>
+<form>
+  <div class="checkbox">
+    <label>
+      <input type="checkbox" id="terms_accepted" value="v1" />
+      Jeg accepterer <%= link_to 'betingelserne for leje', terms_path, target: '_new' %>
+    </label>
+  </div>
+
+  <button type="button" class="btn btn-primary" id="start_payment_button">Fortsæt til betaling</button>
+</form>
+
+<script src="https://checkout.stripe.com/checkout.js"></script>
+
+<script>
+  window.bootstrapData = {
+    stripe: {
+      key: '<%= ENV['STRIPE_PUBLISHABLE_KEY'] %>',
+      amount: '<%= BOOGIE_SETTINGS[:booking_fee] %>'
+    },
+    current_booking_date: '<%= params['date'] %>'
+  }
+</script>
