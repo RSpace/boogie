@@ -60,6 +60,9 @@ class BookingsController < ApplicationController
         # Update the user's email with what they entered in the Stripe window
         current_user.update_attribute(:email, charge.source['name']) if charge.source['name'].present?
 
+        # Send confirmation email to the user
+        UserMailer.booking_confirmation(current_user, @booking).deliver
+
         format.html { redirect_to @booking, notice: 'Booking was successfully created.' }
         format.json { render :show, status: :created, location: @booking }
       else
