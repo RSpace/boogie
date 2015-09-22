@@ -2,8 +2,11 @@ Rails.application.routes.draw do
   devise_for :users
   resources :bookings
 
-  # Staic pages
+  # Static pages
   get 'pages/terms' => 'pages#terms', as: :terms
+  get 'pages/reps' => 'pages#reps', as: :reps
+  get 'pages/rules' => 'pages#rules', as: :rules
+  get 'pages/cleaning' => 'pages#cleaning', as: :cleaning
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

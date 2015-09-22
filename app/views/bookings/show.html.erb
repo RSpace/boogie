@@ -1,9 +1,13 @@
-<p id="notice"><%= notice %></p>
+<div class="page-header">
+  <h1>Kvittering for booking</h1>
+</div>
 
-<p>
-  <strong>Booking date:</strong>
-  <%= @booking.booking_date %>
-</p>
-
-<%= link_to 'Edit', edit_booking_path(@booking) %> |
-<%= link_to 'Back', bookings_path %>
+<p>Du har nu booket fælleslokalet</p>
+<p class="info-box bg-primary lead"><%= l(@booking.booking_date, format: '%A d. %e. %B %Y') %></p>
+<p>Du skal selv aftale udlevering af nøgle med fællesrummets repræsentant i din forening.</p>
+<p><%= link_to 'Se liste over repræsentanter', reps_path %></p>
+<p>Du bedes inden du overtager rummet sætte dig ind i:</p>
+<ul>
+  <li><%= link_to 'Husorden', rules_path %></li>
+  <li><%= link_to 'Rengøringsregler', cleaning_path %></li>
+</ul>

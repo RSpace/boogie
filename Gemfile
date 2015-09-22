@@ -35,6 +35,9 @@ gem 'unicorn'
 # Authentication
 gem 'devise'
 
+# Authorization
+gem 'cancan'
+
 # Twitter Bootstrap
 gem 'bootstrap-sass', '~> 3.3.1'
 gem 'autoprefixer-rails'
