@@ -1,7 +1,7 @@
 class BookingsController < ApplicationController
   before_action :authenticate_user!, :except => :index
-  load_and_authorize_resource
-  # before_action :set_booking, only: [:show, :edit, :update, :destroy]
+  before_action :set_booking, only: [:show, :edit, :update, :destroy]
+  authorize_resource
 
   # GET /bookings
   # GET /bookings.json
@@ -45,8 +45,9 @@ class BookingsController < ApplicationController
           :amount => BOOGIE_SETTINGS[:booking_fee],
           :currency => "DKK",
           :card => token,
-          :description => "payinguser@example.com"
+          :description => "#{@booking.user.username} #{@booking.booking_date.to_s(:utc)}"
         )
+        @booking.stripe_charge_id = charge.id
       rescue Stripe::CardError => e
         raise e # TEST
         charge = false
@@ -55,6 +56,10 @@ class BookingsController < ApplicationController
 
     respond_to do |format|
       if charge && @booking.save
+
+        # Update the user's email with what they entered in the Stripe window
+        current_user.update_attribute(:email, charge.source['name']) if charge.source['name'].present?
+
         format.html { redirect_to @booking, notice: 'Booking was successfully created.' }
         format.json { render :show, status: :created, location: @booking }
       else
@@ -89,7 +94,6 @@ class BookingsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_booking
       @booking = Booking.find(params[:id])
     end

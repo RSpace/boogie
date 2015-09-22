@@ -1,3 +1,7 @@
+<% content_for :head do %>
+  <link rel="stylesheet" href="http://css-spinners.com/css/spinner/three-quarters.css" type="text/css">
+<% end %>
+
 <div class="page-header">
   <h1>Bekræft og betal booking</h1>
 </div>
@@ -20,6 +24,9 @@
   </div>
 
   <button type="button" class="btn btn-primary" id="start_payment_button">Fortsæt til betaling</button>
+  <div class="three-quarters-loader hidden">
+    Vent venligst ...
+  </div>
 </form>
 
 <script src="https://checkout.stripe.com/checkout.js"></script>
@@ -30,6 +37,7 @@
       key: '<%= ENV['STRIPE_PUBLISHABLE_KEY'] %>',
       amount: '<%= BOOGIE_SETTINGS[:booking_fee] %>'
     },
-    current_booking_date: '<%= params['date'] %>'
+    current_booking_date: '<%= params['date'] %>',
+    current_user: <%=raw current_user.to_json %>
   }
 </script>
