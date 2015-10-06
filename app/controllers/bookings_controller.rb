@@ -1,6 +1,6 @@
 class BookingsController < ApplicationController
   before_action :authenticate_user!, :except => :index
-  before_action :set_booking, only: [:show, :edit, :update, :destroy]
+  before_action :set_booking, only: [:show]
   authorize_resource
 
   # GET /bookings
@@ -20,10 +20,6 @@ class BookingsController < ApplicationController
     redirect_to bookings_path, notice: 'Vælg venligst den dato du ønsker at booke.' unless @booking_date.present?
 
     @booking = Booking.new(:booking_date => @booking_date)
-  end
-
-  # GET /bookings/1/edit
-  def edit
   end
 
   # POST /bookings
@@ -69,30 +65,6 @@ class BookingsController < ApplicationController
         format.html { render :new }
         format.json { render json: @booking.errors, status: :unprocessable_entity }
       end
-    end
-  end
-
-  # PATCH/PUT /bookings/1
-  # PATCH/PUT /bookings/1.json
-  def update
-    respond_to do |format|
-      if @booking.update(booking_params)
-        format.html { redirect_to @booking, notice: 'Booking was successfully updated.' }
-        format.json { render :show, status: :ok, location: @booking }
-      else
-        format.html { render :edit }
-        format.json { render json: @booking.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # DELETE /bookings/1
-  # DELETE /bookings/1.json
-  def destroy
-    @booking.destroy
-    respond_to do |format|
-      format.html { redirect_to bookings_url, notice: 'Booking was successfully destroyed.' }
-      format.json { head :no_content }
     end
   end
 

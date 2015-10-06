@@ -3,7 +3,7 @@
 </div>
 
 <p>Du har nu booket fælleslokalet</p>
-<p class="info-box bg-primary lead"><%= l(@booking.booking_date, format: '%A d. %e. %B %Y') %></p>
+<p class="info-box bg-primary lead"><%= l(@booking.booking_date, format: BOOGIE_SETTINGS[:date_format]) %></p>
 <p>Du skal selv aftale udlevering af nøgle med fællesrummets repræsentant i din forening.</p>
 <p><%= link_to 'Se liste over repræsentanter', reps_path %></p>
 <p>Du bedes inden du overtager rummet sætte dig ind i:</p>

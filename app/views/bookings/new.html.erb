@@ -7,7 +7,7 @@
 </div>
 
 <p>Du er ved at booke fælleslokalet</p>
-<p class="info-box bg-primary lead"><%= l(@booking.booking_date, format: '%A d. %e. %B %Y') %></p>
+<p class="info-box bg-primary lead"><%= l(@booking.booking_date, format: BOOGIE_SETTINGS[:date_format]) %></p>
 <p>
   Der bliver trukket <b><%= number_to_currency(BOOGIE_SETTINGS[:booking_fee]/100) %></b> fra dit betalingskort.
   Bookingen og betalingen er bindende og kan ikke annulleres eller laves om.

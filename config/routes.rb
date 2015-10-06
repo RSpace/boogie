@@ -1,6 +1,9 @@
 Rails.application.routes.draw do
   devise_for :users
-  resources :bookings
+  resources :bookings, :only => [:index, :new, :create, :show]
+  namespace :admin do
+    resources :bookings, :except => :show
+  end
 
   # Static pages
   get 'pages/terms' => 'pages#terms', as: :terms

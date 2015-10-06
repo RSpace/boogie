@@ -5,7 +5,12 @@ class Ability
     can :read, Booking
 
     if user.present?
-      can :create, Booking
+      if user.admin?
+        can :manage, Booking
+      else
+        # TODO: Figure out how to only allow non-admins to create paid-for Bookings
+        can :create, Booking
+      end
     end
 
     # Define abilities for the passed in user here. For example:

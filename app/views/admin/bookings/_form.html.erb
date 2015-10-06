@@ -1,0 +1,27 @@
+<%= form_for([:admin, @booking]) do |f| %>
+  <% if @booking.errors.any? %>
+    <div id="error_explanation" class="info-box bg-danger text-danger">
+      <h4><%= @booking.errors.count %> fejl forhindrede denne booking i at blive gemt:</h4>
+
+      <ul>
+      <% @booking.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= f.label :booking_date, 'Booking dato' %><br>
+    <%= f.date_select :booking_date %>
+  </div>
+
+  <div>
+    <%= f.label :user_id, 'Bruger' %><br>
+    <%= f.select :user_id, @all_users.collect { |user| [user.username, user.id] } %>
+  </div>
+
+  <div>
+    <%= f.submit 'Gem booking' %>
+  </div>
+<% end %>

@@ -1,4 +1,4 @@
-Du har nu booket fælleslokalet <%= l(@booking.booking_date, format: '%A d. %e. %B %Y') %>.
+Du har nu booket fælleslokalet <%= l(@booking.booking_date, format: BOOGIE_SETTINGS[:date_format]) %>.
 
 Du skal selv aftale udlevering af nøgle med fællesrummets repræsentant i din forening.
 Se liste over repræsentanter: <%= reps_url %>
