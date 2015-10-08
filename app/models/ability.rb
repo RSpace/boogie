@@ -8,7 +8,6 @@ class Ability
       if user.admin?
         can :manage, Booking
       else
-        # TODO: Figure out how to only allow non-admins to create paid-for Bookings
         can :create, Booking
       end
     end
