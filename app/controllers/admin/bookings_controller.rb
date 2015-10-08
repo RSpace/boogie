@@ -8,9 +8,9 @@ class Admin::BookingsController < ApplicationController
   # GET /admin/bookings
   # GET /admin/bookings.json
   def index
-    # TODO: Add pagination - easiest to just paginate by year
-    # TODO: Join with users table for better performance
-    @bookings = Booking.all
+    @current_year = params['year'].try(:to_i) || Time.now.year
+    @bookings = Booking.includes(:user).order(booking_date: :asc)
+      .where(booking_date: Date.new(@current_year, 1, 1)..Date.new(@current_year, 12, 31))
   end
 
   # GET /admin/bookings/new
