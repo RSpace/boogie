@@ -7,10 +7,10 @@
       <%= t.head(*t('date.day_names').rotate(1).map { |n| n.titleize.first(2) }) %>
       <%= t.day(:day_method => :booking_date) do |day, bookings| %>
         <% if day.month == month %>
-          <% if bookings.present? %>
-            <div class="booked-date"><%= day.day %></div>
-          <% elsif day < Time.now %>
+          <% if day < Time.now %>
             <div class="past-date"><%= day.day %></div>
+          <% elsif bookings.present? %>
+            <div class="booked-date"><%= day.day %></div>
           <% else %>
             <div class="bookable-date">
               <%= link_to day.day, new_booking_path(:date => day.to_s(:utc)) %>

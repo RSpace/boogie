@@ -18,7 +18,7 @@
       <tr>
         <td><%= l(booking.booking_date, format: BOOGIE_SETTINGS[:date_format]) %></td>
         <td><%= booking.user.username %></td>
-        <td><%= booking.stripe_charge_id %></td><%# # TODO: Link to Stripe %>
+        <td><%= link_to_if booking.stripe_charge_id.present?, booking.stripe_charge_id, "https://dashboard.stripe.com/payments/#{booking.stripe_charge_id}" %></td>
         <td>
           <%= link_to 'Rediger', edit_admin_booking_path(booking) %> |
           <%= link_to 'Slet', admin_booking_path(booking), method: :delete, data: {confirm: "Er du sikker på du vil slette #{booking.user.username}'s booking #{l(booking.booking_date, format: BOOGIE_SETTINGS[:date_format])}?"} %>
