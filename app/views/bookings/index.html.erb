@@ -10,7 +10,11 @@
           <% if day < Time.now %>
             <div class="past-date"><%= day.day %></div>
           <% elsif bookings.present? %>
-            <div class="booked-date"><%= day.day %></div>
+            <div class="booked-date"
+            <% if bookings.first.description.present? %>
+              title="<%= bookings.first.description %>"
+            <% end %>
+            ><%= day.day %></div>
           <% else %>
             <div class="bookable-date">
               <%= link_to day.day, new_booking_path(:date => day.to_s(:utc)) %>

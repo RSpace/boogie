@@ -11,17 +11,22 @@
     </div>
   <% end %>
 
-  <div>
+  <div class="form-group">
     <%= f.label :booking_date, 'Booking dato' %><br>
-    <%= f.date_select :booking_date %>
+    <%= f.date_select :booking_date, {}, :class => 'input-lg' %>
   </div>
 
-  <div>
+  <div class="form-group">
     <%= f.label :user_id, 'Bruger' %><br>
-    <%= f.select :user_id, @all_users.collect { |user| [user.username, user.id] } %>
+    <%= f.select :user_id, @all_users.collect { |user| [user.username, user.id] }, {}, :class => 'input-lg' %>
+    <div class="help-text">Vælg din egen bruger hvis du booker på vegne af en forening til et fællesarrangement. Vælg kun en anden bruger hvis du booker på vegne af en beboer, og I sørger for betalingen uden om dette system.</div>
   </div>
 
-  <div>
-    <%= f.submit 'Gem booking' %>
+  <div class="form-group">
+    <%= f.label :description, 'Beskrivelse' %><br>
+    <%= f.text_field :description, :class => 'form-control' %>
+    <div class="help-text">Hvis du booker til en foreningsaktivitet; angiv venligst aktiviteten her</div>
   </div>
+
+  <%= f.submit 'Gem booking', :class => 'btn btn-default' %>
 <% end %>

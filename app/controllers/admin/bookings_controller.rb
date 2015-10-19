@@ -15,7 +15,7 @@ class Admin::BookingsController < ApplicationController
 
   # GET /admin/bookings/new
   def new
-    @booking = Booking.new
+    @booking = Booking.new(:user_id => current_user.id)
   end
 
   # GET /admin/bookings/1/edit
@@ -69,7 +69,7 @@ class Admin::BookingsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def booking_params
-      params.require(:booking).permit(:booking_date, :user_id)
+      params.require(:booking).permit(:booking_date, :user_id, :description)
     end
 
     def require_admin!
