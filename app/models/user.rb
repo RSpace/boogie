@@ -10,9 +10,4 @@ class User < ActiveRecord::Base
   def email_required?
     false
   end
-
-  def admin?
-    # TODO: Allow for multiple admin users
-    self.username == 'admin'
-  end
 end
