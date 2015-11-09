@@ -1,0 +1,18 @@
+<div class="page-header">
+  <h1>Fællesrummets repræsentanter</h1>
+</div>
+
+<p>Hver forening varetager selv udlevering og tilbagelevering af nøgle til fællesrummet. Find repræsentanten for din forening herunder.</p>
+<p>Hvis du ikke kan få fat i din repræsentant, kan du kontakte bestyrelsen i din forening eller skrive til <a href="mailto:skrum@valby-have.dk">fællesrummets e-mail</a>. Du bedes venlist <i>ikke</i> kontakte repræsentanter fra andre foreninger direkte.</p>
+
+<%
+  [
+    ['G/F Kirsebærparken 1', 'Casper Fabricius', 'casper@lol.dk'],
+    ['G/F Kirsebærparken 2', 'Troels Lund', 'troelslund@mac.com'],
+    ['G/F Kirsebærparken 3', 'Nis Jørgensen', 'nis.jorgensen@nokia.com'],
+    ['E/F Solbærparken', 'Jan Bauditz', 'janbauditz@gmail.com']
+  ].each do |assoc, name, email|
+%>
+  <h3><%= assoc %></h3>
+  <p><%= name %> - <a href="mailto:<%= email %>"><%= email %></a></p>
+<% end %>

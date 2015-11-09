@@ -7,9 +7,11 @@ Rails.application.routes.draw do
 
   # Static pages
   get 'pages/terms' => 'pages#terms', as: :terms
-  get 'pages/reps' => 'pages#reps', as: :reps
+  get 'pages/reps' => 'pages#reps', as: :reps, login_required: true
   get 'pages/rules' => 'pages#rules', as: :rules
   get 'pages/cleaning' => 'pages#cleaning', as: :cleaning
+  get 'pages/about' => 'pages#about', as: :about
+  get 'pages/price' => 'pages#price', as: :price
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

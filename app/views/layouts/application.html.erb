@@ -24,9 +24,20 @@
       </div>
       <div id="navbar" class="navbar-collapse collapse">
         <ul class="nav navbar-nav">
-          <li class="<%= 'active' if current_page?(bookings_path) %>"><%= link_to 'Ny booking', bookings_path %> </li>
+          <li class="<%= 'active' if current_page?(bookings_path) || current_page?(root_path) %>"><%= link_to 'Ny booking', bookings_path %></li>
+
+          <li class="<%= 'active' if current_page?(rules_path) %>"><%= link_to 'Husorden', rules_path %></li>
+          <li class="<%= 'active' if current_page?(cleaning_path) %>"><%= link_to 'Rengøring', cleaning_path %></li>
+          <li class="<%= 'active' if current_page?(terms_path) %>"><%= link_to 'Betingelser', terms_path %></li>
+          <li class="<%= 'active' if current_page?(price_path) %>"><%= link_to 'Pris', price_path %></li>
+          <li class="<%= 'active' if current_page?(about_path) %>"><%= link_to 'Om rummet', about_path %></li>
+
+          <% if user_signed_in? %>
+            <li class="<%= 'active' if current_page?(reps_path) %>"><%= link_to 'Repræsentanter', reps_path %></li>
+          <% end %>
+
           <% if user_signed_in? && current_user.admin? %>
-            <li class="<%= 'active' if current_page?(admin_bookings_path) %>"><%= link_to 'Administrer bookinger', admin_bookings_path %> </li>
+            <li class="<%= 'active' if current_page?(admin_bookings_path) %>"><%= link_to 'Administrer bookinger', admin_bookings_path %></li>
           <% end %>
         </ul>
         <ul class="nav navbar-nav navbar-right">
