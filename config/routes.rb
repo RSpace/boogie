@@ -17,7 +17,7 @@ Rails.application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  root 'bookings#index'
+  root to: 'http://turtle.boogie-103357.c66.me'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
