@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 ruby '2.4.6'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.1.8'
+gem 'rails', '4.2.11.1'
 
 # Use postgresql as the database for Active Record
 gem 'pg'
@@ -31,7 +31,7 @@ gem 'sdoc', '~> 0.4.0',          group: :doc
 gem 'unicorn'
 
 # Authentication
-gem 'devise'
+gem 'devise', '3.5.10'
 
 # Authorization
 gem 'cancan'
