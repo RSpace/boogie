@@ -25,56 +25,69 @@ class BookingsController < ApplicationController
   # POST /bookings
   # POST /bookings.json
   def create
-    @booking = Booking.new(booking_params)
+    @booking = Booking.new(booking_params.merge(status: 'pending'))
 
     # Make sure the booking belongs to the current user
     @booking.user = current_user
 
-    # Only charge card if booking is valid
+    # Only start payment process if booking is valid
     if @booking.valid?
       # Get the credit card details submitted by the form
-      token = params[:stripeToken]
+      # token = params[:stripeToken]
 
       # Create the charge on Stripe's servers - this will charge the user's card
-      begin
-        charge = Stripe::Charge.create(
-          :amount => BOOGIE_SETTINGS[:booking_fee],
-          :currency => "DKK",
-          :card => token,
-          :description => "#{@booking.user.username} #{@booking.booking_date.to_s(:utc)}"
-        )
-        @booking.stripe_charge_id = charge.id
-      rescue Stripe::CardError => e
-        raise e # TEST
-        charge = false
-      end
-    end
+      #   begin
+      #     charge = Stripe::Charge.create(
+      #       :amount => BOOGIE_SETTINGS[:booking_fee],
+      #       :currency => "DKK",
+      #       :card => token,
+      #       :description => "#{@booking.user.username} #{@booking.booking_date.to_s(:utc)}"
+      #     )
+      #     @booking.stripe_charge_id = charge.id
+      #   rescue Stripe::CardError => e
+      #     raise e # TEST
+      #     charge = false
+      #   end
+      # end
 
-    respond_to do |format|
-      if charge && @booking.save
+      respond_to do |format|
+        if @booking.save
 
-        # Update the user's email with what they entered in the Stripe window
-        current_user.update_attribute(:email, charge.source['name']) if charge.source['name'].present?
+          # Update the user's email with what they entered in the Stripe window
+          # current_user.update_attribute(:email, charge.source['name']) if charge.source['name'].present?
 
-        # Send confirmation email to the user
-        UserMailer.booking_confirmation(current_user, @booking).deliver
+          # Send confirmation email to the user
+          # UserMailer.booking_confirmation(current_user, @booking).deliver
 
-        format.html { redirect_to @booking, notice: 'Booking was successfully created.' }
-        format.json { render :show, status: :created, location: @booking }
-      else
-        format.html { render :new }
-        format.json { render json: @booking.errors, status: :unprocessable_entity }
+          @stripe_session = Stripe::Checkout::Session.create(
+            payment_method_types: ['card'],
+            line_items: [{
+              name: 'Booking af fælleslokalet',
+              description: l(@booking.booking_date, format: BOOGIE_SETTINGS[:date_format]),
+              amount: BOOGIE_SETTINGS[:booking_fee],
+              currency: 'dkk',
+              quantity: 1
+            }],
+            client_reference_id: @booking.id,
+            success_url: booking_url(@booking),
+            cancel_url: aborted_bookings_url
+          )
+
+          format.json { render json: { booking: @booking, stripe_session_id: @stripe_session.id } }
+        else
+          format.json { render json: @booking.errors, status: :unprocessable_entity }
+        end
       end
     end
   end
 
   private
-    def set_booking
-      @booking = Booking.find(params[:id])
-    end
+  def set_booking
+    @booking = Booking.find(params[:id])
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def booking_params
-      params.require(:booking).permit(:booking_date)
-    end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def booking_params
+    params.require(:booking).permit(:booking_date)
+  end
 end

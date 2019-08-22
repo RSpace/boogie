@@ -42,6 +42,7 @@ gem 'autoprefixer-rails'
 
 # Payment
 gem 'stripe'
+gem 'stripe_event'
 
 # UI
 gem "watu_table_builder", :require => "table_builder"

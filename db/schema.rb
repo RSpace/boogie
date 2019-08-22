@@ -11,23 +11,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151019181955) do
+ActiveRecord::Schema.define(version: 20190820195857) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "bookings", force: true do |t|
+  create_table "bookings", force: :cascade do |t|
     t.date     "booking_date"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "user_id",          null: false
+    t.integer  "user_id",                                null: false
     t.string   "stripe_charge_id"
     t.string   "description"
+    t.string   "status",           default: "confirmed", null: false
   end
 
   add_index "bookings", ["user_id"], name: "index_bookings_on_user_id", using: :btree
 
-  create_table "users", force: true do |t|
+  create_table "users", force: :cascade do |t|
     t.string   "username",               default: "",    null: false
     t.string   "encrypted_password",     default: "",    null: false
     t.string   "reset_password_token"

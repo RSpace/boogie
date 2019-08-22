@@ -3,7 +3,7 @@
 <% end %>
 
 <div class="page-header">
-  <h1>Bekræft og betal booking</h1>
+  <h1>Bekræft booking</h1>
 </div>
 
 <p>Du er ved at booke fælleslokalet</p>
@@ -15,7 +15,8 @@
 
 <p class="info-box bg-danger text-danger hidden" id="terms_not_accepted_error">Du skal acceptere betingelserne for leje for at fortsætte.</p>
 
-<form>
+<%= form_for @booking, html: { id: 'booking_form' } do |f| %>
+  <%= f.hidden_field :booking_date %>
   <div class="checkbox">
     <label>
       <input type="checkbox" id="terms_accepted" value="v1" />
@@ -27,9 +28,9 @@
   <div class="three-quarters-loader hidden">
     Vent venligst ...
   </div>
-</form>
+<% end %>
 
-<script src="https://checkout.stripe.com/checkout.js"></script>
+<script src="https://js.stripe.com/v3/"></script>
 
 <script>
   window.bootstrapData = {

@@ -1,9 +1,16 @@
 Rails.application.routes.draw do
   devise_for :users
-  resources :bookings, :only => [:index, :new, :create, :show]
+  resources :bookings, :only => [:index, :new, :create, :show] do
+    collection do
+      get 'aborted'
+    end
+  end
   namespace :admin do
     resources :bookings, :except => :show
   end
+
+  # Stripe webhooks
+  mount StripeEvent::Engine, at: '/stripe-webhooks'
 
   # Static pages
   get 'pages/terms' => 'pages#terms', as: :terms

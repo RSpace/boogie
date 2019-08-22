@@ -16,47 +16,32 @@
 
       showSpinner();
 
-      var handler = StripeCheckout.configure({
-        key: window.bootstrapData.stripe.key,
-        token: function(token) {
-          token_triggered = true;
+      var elForm = $('#booking_form')
 
-          $.post(
-            '/bookings.json',
-            {
-              stripeToken: token.id,
-              booking: {
-                booking_date: window.bootstrapData.current_booking_date
-              }
-            }
-          ).done(function(booking) {
-            location.href = '/bookings/' + booking.id;
-          }).fail(function(errors) {
-            console.log(errors);
-            hideSpinner();
-            alert('Bookingen kunne ikke oprettes - er datoen allerede optaget?');
+      $.post(
+        elForm.attr('action'),
+        elForm.serialize()
+      ).done(function(result) {
+        var stripe = Stripe(window.bootstrapData.stripe.key);
+        stripe.redirectToCheckout({
+          // Make the id field from the Checkout Session creation API response
+          // available to this file, so you can provide it as parameter here
+          // instead of the {{CHECKOUT_SESSION_ID}} placeholder.
+          sessionId: result.stripe_session_id
+        }).then(function (result) {
+          // If `redirectToCheckout` fails due to a browser or network
+          // error, display the localized error message to your customer
+          // using `result.error.message`.
+          console.log(result.error.message);
+          hideSpinner();
+          alert('Bookingen kunne ikke oprettes - der skete en uventet fejl.');
           });
-        }
-      });
-
-      // Open Checkout with further options
-      handler.open({
-        amount: window.bootstrapData.stripe.amount,
-        currency: "DKK",
-        name: "SKRum",
-        description: "Leje af fælleslokale",
-        panelLabel: "Betal og book",
-        email: window.bootstrapData.current_user.email,
-        closed: function() { if(!token_triggered) { hideSpinner(); } }
+      }).fail(function(errors) {
+        console.log(errors);
+        hideSpinner();
+        alert('Bookingen kunne ikke oprettes - er datoen allerede optaget?');
       });
     });
-
-    // Close Checkout on page navigation
-    $(window).on('popstate', function() {
-      handler.close();
-      hideSpinner();
-    });
-
   });
 
   function showSpinner() {
