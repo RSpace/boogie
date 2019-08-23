@@ -24,6 +24,15 @@ class Booking < ActiveRecord::Base
       status: "confirmed",
       stripe_charge_id: stripe_obj.payment_intent
     )
+  end
+
+  # See https://stripe.com/docs/api/charges/object
+  def self.stripe_charge_suceeded(stripe_obj)
+    payment_intent_id = stripe_obj.payment_intent
+    @booking = Booking.find_by(stripe_charge_id: payment_intent_id)
+
+    billing_email = stripe_obj.billing_details.email
+    @booking.user.update_attributes!(email: billing_email)
     UserMailer.booking_confirmation(@booking.user, @booking).deliver_now
   end
 
