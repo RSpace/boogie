@@ -64,7 +64,7 @@ class BookingsController < ApplicationController
             line_items: [{
               name: 'Booking af fælleslokalet',
               description: l(@booking.booking_date, format: BOOGIE_SETTINGS[:date_format]),
-              amount: BOOGIE_SETTINGS[:booking_fee],
+              amount: booking_fee_by_date(@booking.booking_date),
               currency: 'dkk',
               quantity: 1
             }],

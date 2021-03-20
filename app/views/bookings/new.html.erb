@@ -9,7 +9,7 @@
 <p>Du er ved at booke fælleslokalet</p>
 <p class="info-box bg-primary lead"><%= l(@booking.booking_date, format: BOOGIE_SETTINGS[:date_format]) %></p>
 <p>
-  Der bliver trukket <b><%= number_to_currency(BOOGIE_SETTINGS[:booking_fee]/100) %></b> fra dit betalingskort.
+  Der bliver trukket <b><%= number_to_currency(booking_fee_by_date(@booking.booking_date)/100) %></b> fra dit betalingskort.
   Bookingen og betalingen er bindende og kan ikke annulleres eller laves om.
 </p>
 
@@ -36,7 +36,7 @@
   window.bootstrapData = {
     stripe: {
       key: '<%= ENV['STRIPE_PUBLISHABLE_KEY'] %>',
-      amount: '<%= BOOGIE_SETTINGS[:booking_fee] %>'
+      amount: '<%= booking_fee_by_date(@booking.booking_date) %>'
     },
     current_booking_date: '<%= params['date'] %>',
     current_user: <%=raw current_user.to_json %>

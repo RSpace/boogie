@@ -2,4 +2,14 @@
   <h1>Pris for leje af fællesrummet</h1>
 </div>
 
-<p>Det koster <b><%= number_to_currency(BOOGIE_SETTINGS[:booking_fee]/100) %></b> at leje fællesrummet fra kl. 10 på dagen til kl. 10 den følgende dag.</p>
+<p>Det koster følgende beløb at leje fællesrummet fra kl. 10 på dagen til kl. 10 den følgende dag:</p>
+
+<ul>
+  <% (0...BOOGIE_SETTINGS[:booking_fee].length).each do |wday| %>
+    <li>
+      <%= I18n.t("date.day_names")[wday].titleize %>
+      :
+      <%= number_to_currency(BOOGIE_SETTINGS[:booking_fee][wday]/100) %>
+    </li>
+  <% end %>
+</ul>
