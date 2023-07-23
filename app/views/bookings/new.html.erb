@@ -1,0 +1,40 @@
+<div class="page-header">
+  <h1>Bekræft booking</h1>
+</div>
+
+<p>Du er ved at booke fælleslokalet</p>
+<p class="info-box bg-primary lead"><%= l(@booking.booking_date, format: BOOGIE_SETTINGS[:date_format]) %></p>
+<p>
+  Der bliver trukket <b><%= number_to_currency(booking_fee_by_date(@booking.booking_date)/100) %></b> fra dit betalingskort.
+  Bookingen og betalingen er bindende og kan ikke annulleres eller laves om.
+</p>
+
+<p class="info-box bg-danger text-danger hidden" id="terms_not_accepted_error">Du skal acceptere betingelserne for leje for at fortsætte.</p>
+
+<%= form_for @booking, html: { id: 'booking_form' } do |f| %>
+  <%= f.hidden_field :booking_date %>
+  <div class="checkbox">
+    <label>
+      <input type="checkbox" id="terms_accepted" value="v1" />
+      Jeg accepterer <%= link_to 'betingelserne for leje', terms_path, target: '_new' %>
+    </label>
+  </div>
+
+  <button type="button" class="btn btn-primary" id="start_payment_button">Fortsæt til betaling</button>
+  <div class="three-quarters-loader hidden">
+    Vent venligst ...
+  </div>
+<% end %>
+
+<script src="https://js.stripe.com/v3/"></script>
+
+<script>
+  window.bootstrapData = {
+    stripe: {
+      key: '<%= ENV['STRIPE_PUBLISHABLE_KEY'] %>',
+      amount: '<%= booking_fee_by_date(@booking.booking_date) %>'
+    },
+    current_booking_date: '<%= params['date'] %>',
+    current_user: <%=raw current_user.to_json %>
+  }
+</script>

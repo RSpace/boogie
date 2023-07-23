@@ -1,0 +1,75 @@
+class BookingsController < ApplicationController
+  before_action :authenticate_user!, :except => :index
+  before_action :set_booking, only: [:show]
+  authorize_resource
+
+  # GET /bookings
+  # GET /bookings.json
+  def index
+    @bookings = Booking.all_this_month_and_forward
+  end
+
+  # GET /bookings/1
+  # GET /bookings/1.json
+  def show
+  end
+
+  # GET /bookings/new
+  def new
+    @booking_date = params[:date].try(:to_date) rescue nil
+    redirect_to bookings_path, notice: 'Vælg venligst den dato du ønsker at booke.' unless @booking_date.present?
+
+    @booking = Booking.new(:booking_date => @booking_date)
+  end
+
+  # POST /bookings
+  # POST /bookings.json
+  def create
+    @booking = Booking.new(booking_params.merge(status: 'pending'))
+
+    # Make sure the booking belongs to the current user
+    @booking.user = current_user
+
+    # Only start payment process if booking is valid
+    if @booking.valid?
+      respond_to do |format|
+        if @booking.save
+
+          # Update the user's email with what they entered in the Stripe window
+          # current_user.update_attribute(:email, charge.source['name']) if charge.source['name'].present?
+
+          # Send confirmation email to the user
+          # UserMailer.booking_confirmation(current_user, @booking).deliver
+
+          @stripe_session = Stripe::Checkout::Session.create(
+            payment_method_types: ['card'],
+            line_items: [{
+              name: 'Booking af fælleslokalet',
+              description: l(@booking.booking_date, format: BOOGIE_SETTINGS[:date_format]),
+              amount: booking_fee_by_date(@booking.booking_date),
+              currency: 'dkk',
+              quantity: 1
+            }],
+            client_reference_id: @booking.id,
+            success_url: booking_url(@booking),
+            cancel_url: aborted_bookings_url
+          )
+
+          format.json { render json: { booking: @booking, stripe_session_id: @stripe_session.id } }
+        else
+          format.json { render json: @booking.errors, status: :unprocessable_entity }
+        end
+      end
+    end
+  end
+
+  private
+  def set_booking
+    @booking = Booking.find(params[:id])
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def booking_params
+    params.require(:booking).permit(:booking_date)
+  end
+end

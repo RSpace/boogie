@@ -1,0 +1,27 @@
+<h1>Book fællesrummet</h1>
+
+<% for_each_future_month(7) do |year, month| %>
+  <div class="booking-month">
+    <h3><%= t('date.month_names')[month].titleize %> <%= year %></h3>
+    <%= calendar_for(@bookings, :year => year, :month => month, :first_day_of_week => 1, :html => {:class => 'table table-bordered'}) do |t| %>
+      <%= t.head(*t('date.day_names').rotate(1).map { |n| n.titleize.first(2) }) %>
+      <%= t.day(:day_method => :booking_date) do |day, bookings| %>
+        <% if day.month == month %>
+          <% if day < Time.now %>
+            <div class="past-date"><%= day.day %></div>
+          <% elsif bookings.present? %>
+            <div class="booked-date"
+            <% if bookings.first.description.present? %>
+              title="<%= bookings.first.description %>"
+            <% end %>
+            ><%= day.day %></div>
+          <% else %>
+            <div class="bookable-date">
+              <%= link_to day.day, new_booking_path(:date => day.to_s) %>
+            </div>
+          <% end %>
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>
