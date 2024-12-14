@@ -31,7 +31,7 @@ gem 'sdoc', '~> 0.4.0',          group: :doc
 gem 'unicorn'
 
 # Authentication
-gem 'devise', '3.5.10'
+gem 'devise', '4.7.1'
 
 # Authorization
 gem 'cancan'
