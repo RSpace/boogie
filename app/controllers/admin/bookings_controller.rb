@@ -72,11 +72,6 @@ class Admin::BookingsController < ApplicationController
       params.require(:booking).permit(:booking_date, :user_id, :description)
     end
 
-    def require_admin!
-      # TODO: Figure out how to this check and redirect properly
-      redirect_to root_url, notice: 'Du skal være administrator for at tilgå denne del af systemet.' unless current_user.admin?
-    end
-
     def load_all_users
       @all_users = User.all
     end

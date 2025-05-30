@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   end
   namespace :admin do
     resources :bookings, :except => :show
+    resources :users, :only => [:index, :edit, :update]
   end
 
   # Stripe webhooks

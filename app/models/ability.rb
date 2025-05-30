@@ -7,6 +7,7 @@ class Ability
     if user.present?
       if user.admin?
         can :manage, Booking
+        can :manage, User
       else
         can :create, Booking
       end

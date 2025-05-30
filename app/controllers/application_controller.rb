@@ -4,4 +4,10 @@ class ApplicationController < ActionController::Base
   end
 
   helper_method :booking_fee_by_date
+
+  protected
+  def require_admin!
+    # TODO: Figure out how to this check and redirect properly
+    redirect_to root_url, notice: 'Du skal være administrator for at tilgå denne del af systemet.' unless current_user.admin?
+  end
 end
